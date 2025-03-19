@@ -69,7 +69,7 @@
               sudo docker rm image-chat-bot || true
               sudo docker rmi ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest || true
               sudo docker pull ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest
-              sudo docker run -d --name image-chat-bot -p 8502:8502 \
+              sudo docker run -d --name image-chat-bot -p 8503:8503 \
                 -e GOOGLE_API_KEY="${{ secrets.GOOGLE_API_KEY }}" \
                 -e NODE_ENV=production \
                 ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest
