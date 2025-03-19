@@ -10,7 +10,7 @@ import time
 load_dotenv()
 
 # Initialize Gemini client
-client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+client = genai.Client(api_key="AIzaSyArsv1opSupAk53gRzy3cbCCfWKW7yOiBs")
 
 # Configure Streamlit page
 st.set_page_config(page_title="Vision Chat Pro", layout="wide")

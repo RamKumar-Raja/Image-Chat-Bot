@@ -36,16 +36,16 @@
             context: .
             file: Dockerfile
             push: true
-            tags: ${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot:latest
+            tags: ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest
 
         - name: Remove previous Docker images from Docker Hub (optional)
           run: |
-            IMAGE_NAME="${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot"
-            IMAGE_TAGS=$(curl -s "https://hub.docker.com/v2/repositories/${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot/tags/" | jq -r '.results[].name')
+            IMAGE_NAME="${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot"
+            IMAGE_TAGS=$(curl -s "https://hub.docker.com/v2/repositories/${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot/tags/" | jq -r '.results[].name')
             for tag in $IMAGE_TAGS; do
               if [[ "$tag" != "latest" ]]; then
                 echo "Removing image: ${IMAGE_NAME}:${tag}"
-                curl -s -X DELETE -u "${{ env.DOCKER_HUB_USERNAME }}:${{ env.DOCKER_HUB_ACCESS_TOKEN }}" "https://hub.docker.com/v2/repositories/${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot/tags/${tag}/"
+                curl -s -X DELETE -u "${{ env.DOCKER_HUB_USERNAME }}:${{ env.DOCKER_HUB_ACCESS_TOKEN }}" "https://hub.docker.com/v2/repositories/${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot/tags/${tag}/"
               fi
             done
 
@@ -65,14 +65,14 @@
           run: |
             ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ env.GCP_SSH_USERNAME }}@${{ env.GCP_VM_IP }} << 'EOF'
               sudo systemctl start docker
-              sudo docker stop video-chat-bot || true
-              sudo docker rm video-chat-bot || true
-              sudo docker rmi ${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot:latest || true
-              sudo docker pull ${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot:latest
-              sudo docker run -d --name video-chat-bot -p 8502:8502 \
+              sudo docker stop image-chat-bot || true
+              sudo docker rm image-chat-bot || true
+              sudo docker rmi ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest || true
+              sudo docker pull ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest
+              sudo docker run -d --name image-chat-bot -p 8502:8502 \
                 -e GOOGLE_API_KEY="${{ secrets.GOOGLE_API_KEY }}" \
                 -e NODE_ENV=production \
-                ${{ env.DOCKER_HUB_USERNAME }}/video-chat-bot:latest
+                ${{ env.DOCKER_HUB_USERNAME }}/image-chat-bot:latest
             EOF
 
         - name: Clean up SSH Key
